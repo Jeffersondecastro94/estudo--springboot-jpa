@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,11 +27,14 @@ public class User implements Serializable{
 	private String email;
 	private String phone;
 	private String passoword;
+													//QUANDO DERMOS O SELECT UM OU OUTRO DA ASSOCIACAO VAI TRAZER O VALOR DA OUTRA CLASSE ASSOCIADA, 	
+													//É MELHOR COLOCAR ISSO, ONDE TEM O MUITOS, NAO A FK(NO CASO QUEM VAI TER A FK NA OUTRA TABELA)
+	@JsonIgnore										//SERVE PARA AO DAR O GET , NAO TER UM LOOP INFINITO, POIS USER TEM ORDER, ORDER TEM USER , ENTAO UM FICARIA CHAMANDO O OUTRO. 
+													//PODEMOS USAR O JSONIGNORE DE UM LADO OU DO OUTRO. 
+													//spring.jpa.open-in-view=true MAS SO FUNCIONA SE DEIXARMOS ISSO NO application.properties
 	
-	@OneToMany(mappedBy="client") 
-	//mapeado na outra classe por "cliente", no order no caso
-	// um cliente vai ter varios pedidos. logo criamos uma lista aq do order ,nao criamos set, nao colocamos ele no construtor daqui
-	private List<Order> orders= new ArrayList<>(); //
+	@OneToMany(mappedBy="client") 					//mapeado na outra classe por "cliente", no order no caso													
+	private List<Order> orders= new ArrayList<>(); // um cliente vai ter varios pedidos. logo criamos uma lista aq do order ,nao criamos set, nao colocamos ele no construtor daqui
 	
 	public User () {
 		

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,10 +22,12 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	private Instant moment;
 	
-	@ManyToOne //varios pededios para 1 cliente. colocamos o cliente no construtor ja que nao é uma lista
-	@JoinColumn(name="client_id") //nome da chave estrangeria do banco que ta dentro dessa tabela
+	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd'T'HH:mm:ss'Z'",timezone="GMT")
+	private Instant moment;
+
+	@ManyToOne 							//varios pededios para 1 cliente. colocamos o cliente no construtor ja que nao é uma lista
+	@JoinColumn(name="client_id") 		//nome da chave estrangeria do banco que ta dentro dessa tabela
 	private User client;
 	
 	public Order() {
@@ -31,7 +35,6 @@ public class Order implements Serializable {
 	}
 
 	public Order(Long id, Instant moment, User client) {
-		super();
 		this.id = id;
 		this.moment = moment;
 		this.client = client;
