@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.estudo.estudo.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
@@ -25,7 +26,10 @@ public class Order implements Serializable {
 	
 	@JsonFormat(shape=JsonFormat.Shape.STRING,pattern="yyyy-MM-dd'T'HH:mm:ss'Z'",timezone="GMT")
 	private Instant moment;
-
+	
+	//private OrderStatus orderStatus;
+	private Integer orderStatus;
+	
 	@ManyToOne 							//varios pededios para 1 cliente. colocamos o cliente no construtor ja que nao é uma lista
 	@JoinColumn(name="client_id") 		//nome da chave estrangeria do banco que ta dentro dessa tabela
 	private User client;
@@ -34,10 +38,12 @@ public class Order implements Serializable {
 	
 	}
 
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment,OrderStatus orderStatus, User client) {
 		this.id = id;
 		this.moment = moment;
 		this.client = client;
+		setOrderStatus(orderStatus);
+		//this.orderStatus=orderStatus;
 	}
 
 	public Long getId() {
@@ -54,6 +60,22 @@ public class Order implements Serializable {
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+
+	
+	
+	
+	
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus) ; // tranforma em orderStatus
+		//return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if (orderStatus!=null) {
+			this.orderStatus = orderStatus.getCode();
+		}
+		
 	}
 
 	public User getClient() {
