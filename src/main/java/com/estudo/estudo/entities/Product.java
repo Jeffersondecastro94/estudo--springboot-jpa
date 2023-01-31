@@ -10,8 +10,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="tb_product")
@@ -40,12 +42,23 @@ public class Product implements Serializable {
 	
 	//tem que instanciar quando cria assim como uma lista , para criar vazia e nao nula
 	// set pq nao queremos repetir a mesma categoria pra um produto
-	@Transient
-	Set<Category> pkCategory= new HashSet<>();
+	
+	
+	@ManyToMany
+	@JoinTable(name="tb_product_category",
+	joinColumns		   =@JoinColumn(name="product_id"),
+	inverseJoinColumns =@JoinColumn(name="category_id"))
+	
+	Set<Category> categories= new HashSet<>();
 	
 	public Set<Category> getPkCategory() {
-		return pkCategory;
+		return categories;
 	}
+	public List<Category> getCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 	public Integer getId() {
 		return id;
