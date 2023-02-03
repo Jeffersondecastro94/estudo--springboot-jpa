@@ -2,7 +2,6 @@ package com.estudo.estudo.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,18 +19,6 @@ import jakarta.persistence.Table;
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	public Product() {
-	}
-	public Product(Integer id, String name, String description, Double price, String imgUrl) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.imgUrl = imgUrl;
-	}
-
-
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -40,23 +27,28 @@ public class Product implements Serializable {
 	private Double price;
 	private String imgUrl;
 	
+	public Product() {
+	}
+	
+	public Product(Integer id, String name, String description, Double price, String imgUrl) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.imgUrl = imgUrl;
+	}
+	
 	//tem que instanciar quando cria assim como uma lista , para criar vazia e nao nula
-	// set pq nao queremos repetir a mesma categoria pra um produto
-	
-	
+		// set pq nao queremos repetir a mesma categoria pra um produto
+		
 	@ManyToMany
 	@JoinTable(name="tb_product_category",
 	joinColumns		   =@JoinColumn(name="product_id"),
 	inverseJoinColumns =@JoinColumn(name="category_id"))
-	
 	Set<Category> categories= new HashSet<>();
-	
-	public Set<Category> getPkCategory() {
+
+	public Set<Category> getCategories() {
 		return categories;
-	}
-	public List<Category> getCategories() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 
