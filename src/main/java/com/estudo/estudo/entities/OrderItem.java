@@ -3,7 +3,8 @@ package com.estudo.estudo.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.estudo.estudo.entities.pk.OrdemItemPK;
+import com.estudo.estudo.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -17,8 +18,8 @@ public class OrderItem implements Serializable {
 	private static final long serialVersionUID=1L;
 	
 	//identicador
-	@EmbeddedId  				// forma de identificar como id 
-	private OrdemItemPK id;
+	@EmbeddedId  				// forma de identificar como id  temos que instaciar 
+	private OrderItemPK id =new OrderItemPK();
 	
 	//colocar referencia da coluna caso exista uma tabela no banco
 	private Integer quantity;
@@ -41,6 +42,7 @@ public class OrderItem implements Serializable {
 	
 	//GET E SETS 
 	//ESTAO DENTRO DO ID, LOGO CRIAMOS COMO ABAIXO
+	@JsonIgnore		//usar para evitar o loop 
 	public Order getOrder() {
 		return id.getOrder();
 	}
